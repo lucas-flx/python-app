@@ -12,10 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Shorten Commit ID
-      shell: bash
-      run: |
-        echo "COMMIT_ID=${GITHUB_SHA::6}" >> "$GITHUB_ENV"
+      - 
+        name: Shorten Commit ID
+        shell: bash
+        run: |
+          echo "COMMIT_ID=${GITHUB_SHA::6}" >> "$GITHUB_ENV"
       -
         name: Login to Docker Hub
         uses: docker/login-action@v3

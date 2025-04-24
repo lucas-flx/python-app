@@ -1,4 +1,4 @@
-name: ci
+name: cicd
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
       - main
 
 jobs:
-  docker:
-    runs-on: self-hosted
+  ci:
+    runs-on: ubuntu-latest
     steps:
 
       - 
@@ -29,3 +29,19 @@ jobs:
         with:
           push: true
           tags: lucasfelixicaro/python-app:${{ env.COMMIT_ID }}
+
+  cd:
+    needs: ci
+    runs-on: self-hosted
+    steps:
+
+      - 
+        name: ArgoCD App Sync
+        shell: bash
+        run: |
+          argocd login argocd-server.argocd \
+            --insecure \
+            --grpc-web \
+            --username admin \
+            --password ${{ vars.ARGOCD_PASSWORD }}
+          argocd app sync python-app
